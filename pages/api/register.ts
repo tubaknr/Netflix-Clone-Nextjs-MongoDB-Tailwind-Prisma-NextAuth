@@ -7,26 +7,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).end();
     }    
     try{
+        //request in body sini ayır
         const { email, name, password } = req.body;
-        console.log(email, name, password);
         
+        
+        //eğer önceden kaydolmuşsa aynı mail ile
         const existingUser = await prismadb.user.findUnique({
             where: {
                 email,
             }
         });
-
         if (existingUser){
             return res.status(422).json({ error: "Email taken"});
         }
 
+        //eğer önceden kaydolmamışsa, şifresini şifrele
         const hashedPassword = await bcrypt.hash(password, 12);
 
+        //yeni kullanıcı oluştur kaydet
         const user = await prismadb.user.create({
             data: {
-                email, name, hashedPassword, image: '', emailVerified: new Date(),
+                email, 
+                name, 
+                hashedPassword,
+                image: '',
+                emailVerified: new Date()
             }
         });
+        //başarılı dön
         return res.status(200).json(user);
     
     }catch(error){

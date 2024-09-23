@@ -28,11 +28,11 @@ export default function Navbar() {
     }, []);
 
     const toggleMobileMenu = useCallback(() => {
-        setShowMobileMenu((current) => !current);
+        setShowMobileMenu((current) => !current); //tıklayınca aç kapa için
     }, []);
 
     const toggleAccountMenu = useCallback(() => {
-        setShowAccountMenu((current) => !current);
+        setShowAccountMenu((current) => !current); //tıklayınca aç kapa için
     }, []);
     
 

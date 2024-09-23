@@ -2,6 +2,7 @@ import React from 'react'
 import {getSession} from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
+import Billboard from '@/components/Billboard';
 
 //ERROR:email basıyor, name bassın.
 //ERROR: github giriş her zaman girmiyor, googe da öyle.
@@ -34,6 +35,7 @@ export default function Home() {
     return (
         <>
         <Navbar/>
+        <Billboard/>
         </>
   )
 }

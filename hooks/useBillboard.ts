@@ -1,8 +1,6 @@
 import useSWR from 'swr';
 import fetcher from '@/lib/fetcher';
 
-// Custom Hook called useBillboard. 
-// Custom hooks allow you to encapsulate and reuse logic in your React components.
 
 const useBillboard = () => {
     const { data, error, isLoading } = useSWR('/api/random', fetcher, { //random filmi çeker
@@ -14,9 +12,9 @@ const useBillboard = () => {
     });
 
     return{
-        data,
-        error,
-        isLoading
+        data, //fetched data from the API endpoint. random movie.
+        error, // If the fetch was successful, this will be undefined.
+        isLoading // A boolean indicating whether the request is currently in progress. Note that isLoading is not a built-in property of SWR, so it might be derived from checking if data is undefined and error is null.
     }
 }
 

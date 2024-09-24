@@ -7,6 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).end();
     }    
     try{
+        console.log("register dayızzzz");
         //request in body sini ayır
         const { email, name, password } = req.body;
         

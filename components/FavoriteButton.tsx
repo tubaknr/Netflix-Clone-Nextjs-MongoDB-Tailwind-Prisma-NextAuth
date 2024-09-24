@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useCallback, useMemo } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlineCheck } from 'react-icons/ai';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useFavorites from '@/hooks/useFavorites';
+import { getSession } from 'next-auth/react';
 
 
 interface FavoriteButtonProps {
@@ -30,33 +31,68 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
 
     // useCallback = memoization. 
     const toggleFavorites = useCallback(async() => {
+        if (!movieId) {
+            console.error("Movie ID is missing");
+            return;
+        }
+        console.log(movieId);
         
         let response;
 
         // if it is a fav, delete from favs list
         if (isFavorite){
+            // console.log("isFav:", isFavorite);
             response = await axios.delete('/api/favorite', { data: { movieId } });
+            console.log(response);
         }
 
-        // if it is not a fav, add to favs
+        // FAV EKLE
         else{
-            response = await axios.post('/api/favorite', { movieId });
+            try{
+
+                // console.log("isFav:", isFavorite);
+                response = await axios.post('/api/favorite', { id: movieId });
+                console.log("response:", response);
+            }catch(error){
+                console.error("Error adding to favorites:", error.response?.data || error.message);
+            }
         }
 
         // new favs list; made of fav movie id s
-        const updatedFavorites = response?.data?.favoriteIds;
-        
-        // mutate: 'fcn to update the user's state after fav list modified' or cache with the new user data, including the updated list of favorite IDs
-        mutate({
-            ...currentUser, //object spread operator which creates a shallow copy of the currentUser object.
-            favoriteIds: updatedFavorites
-        });
+            const updatedFavorites = response?.data?.favoriteIds;
+            
+            // mutate: 'fcn to update the user's state after fav list modified'
+            // or cache with the new user data, including the updated list of favorite IDs
+            mutate({
+                ...currentUser, //object spread operator which creates a shallow copy of the currentUser object.
+                favoriteIds: updatedFavorites
+            });
+
+            // mutateFavorites: A function to update the favorites UI or re-fetch data.
+            mutateFavorites();
+
     }, [movieId, isFavorite, currentUser, mutate, mutateFavorites]);
 
+    const Icon = isFavorite ? AiOutlineCheck : AiOutlinePlus;
 
     return(
-        <div className='cursor-pointer group/item w-6 h-6 lg:w-10 lg:h-10 border-white border-2 rounded-full flex justify-center items-center transition hover:border-neutral-300'>
-            <AiOutlinePlus className="text-white" size={25}/>
+        <div onClick={toggleFavorites} 
+             className='cursor-pointer
+                        group/item
+                        w-6 
+                        h-6 
+                        lg:w-10 
+                        lg:h-10 
+                        border-white 
+                        border-2 
+                        rounded-full 
+                        flex 
+                        justify-center 
+                        items-center 
+                        transition 
+                        hover:border-neutral-300'>
+
+            <Icon className="text-white" size={25}/>
         </div>
     )
 };

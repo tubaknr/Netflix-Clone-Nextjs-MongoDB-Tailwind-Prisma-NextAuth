@@ -9,25 +9,38 @@ import { NextApiRequest, NextApiResponse } from 'next';
 // 1. kimlik sorgusu, 2. filmi tespit, 3. db güncelleme
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
+    console.log("sayfaya geldik");
     try{
+        console.log("try dayız");
 
         //filmi favorilere ekle
         if(req.method === "POST"){
-            const { currentUser } = await serverAuth(req);
-            
-            const { movieId } = req.body;
+            console.log("post girdi");
 
-            // öyle bir film var mı gerçekten
+            // 1. kimlik sorgusu
+            const { currentUser } = await serverAuth(req);
+            console.log("Current user:", currentUser);
+            
+            if (!currentUser) {
+                return res.status(401).json({ error: "Unauthorized" });
+            }
+
+            // 2. filmi tespit
+            const { movieId } = req.body;
+            console.log("film tespit edildi");
             const existingMovie = await prismadb.movie.findUnique({
                 where: {
                     id: movieId,
                 }
             });
+            console.log("existingMovie bulundu favorite.ts");
 
             if(!existingMovie){
+                console.log("existing movie yok");
                 throw new Error("Invalid ID");
             }
 
+            // 3. db güncelleme
             const user = await prismadb.user.update({
                 where: {
                     email: currentUser.email || '',
@@ -38,16 +51,18 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     }
                 }
             });
-
+            console.log("db güncellendi");
             return res.status(200).json(user);
-        }
+}
 
         //filmi favorilerden çıkar
         if(req.method === "DELETE"){
+
+            // 1. kimlik sorgusu
             const { currentUser } = await serverAuth(req);
 
+            // 2. filmi tespit
             const { movieId } = req.body;
-
             const existingMovie = await prismadb.movie.findUnique({
                 where: {
                     id: movieId, //filmin id'sinden hangi film olduğunu bul
@@ -56,11 +71,10 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
             if(!existingMovie){
                 throw new Error("Invalid ID");
             };
+ 
 
-            //o filmi çıkar
+            // 3. db güncelleme
             const updatedFavoriteIds = without(currentUser.favoriteIds, movieId);
-
-            //database i güncelle update et
             const updatedUser = await prismadb.user.update({
                 where: {
                     email: currentUser.email || '',
@@ -78,7 +92,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
 
     }catch(error){
         console.log(error);
-        return res.status(400).end();
+        return res.status(500).json({ error: error.message || "Something went wrong" });
     } 
 }
 

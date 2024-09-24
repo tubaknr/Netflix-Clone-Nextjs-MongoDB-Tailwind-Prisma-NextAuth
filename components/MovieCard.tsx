@@ -11,6 +11,7 @@ interface MovieCardProps{
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({data}) => {
+    // console.log("data?.id:",data?.id);
     return(
         <>
         <div className="group bg-zinc-900 col-span relative h-[12vw]">

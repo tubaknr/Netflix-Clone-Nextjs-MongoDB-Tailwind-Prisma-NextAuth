@@ -15,19 +15,17 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
 
         //filmi favorilere ekle
         if(req.method === "POST"){
-            console.log("post girdi");
 
             // 1. kimlik sorgusu
             const { currentUser } = await serverAuth(req);
-            console.log("Current user:", currentUser);
-            
+            console.log("current found");
+
             if (!currentUser) {
-                return res.status(401).json({ error: "Unauthorized" });
+                return res.status(401).json({ error: "Unauthorized! serverAuth" });
             }
 
             // 2. filmi tespit
             const { movieId } = req.body;
-            console.log("film tespit edildi");
             const existingMovie = await prismadb.movie.findUnique({
                 where: {
                     id: movieId,

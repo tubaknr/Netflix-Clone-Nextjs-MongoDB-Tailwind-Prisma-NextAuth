@@ -63,6 +63,11 @@ export default NextAuth({
     },
     debug: process.env.NODE_ENV === "development",
     adapter: PrismaAdapter(prismadb),
+    callbacks: {
+        async session({ session, token, user }) {
+            return session
+        }
+    },
     session: {
         strategy: "jwt",
     },

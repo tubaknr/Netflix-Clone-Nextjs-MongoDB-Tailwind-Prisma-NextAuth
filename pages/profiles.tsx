@@ -40,7 +40,7 @@ export default function Profiles() {
                             <img src='/images/default_user.jpg' alt='default user'/>
                         </div>
                         <div className='mt-4 text-gray-400 text-2xl text-center group-hover:text-white'>
-                            {user?.name}
+                            {user?.expires}
                         </div>
                     </div>
 

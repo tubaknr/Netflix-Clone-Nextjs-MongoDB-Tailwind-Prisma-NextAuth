@@ -3,38 +3,41 @@ import { without } from 'lodash';
 import prismadb from '@/lib/prismadb';
 import serverAuth from '@/lib/serverAuth';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from "next-auth/react";
 
 //bir filmi favorilere ekleme - çıkarma . 
 // & db güncelleme
 // 1. kimlik sorgusu, 2. filmi tespit, 3. db güncelleme
 
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
-    console.log("sayfaya geldik");
     try{
-        console.log("try dayız");
-
+        const session = await getSession({ req });
+        console.log("SESSIONNNNN object:", session); // Log the session object
+        //signed in or not
+        if (!session){
+            throw new Error("Session not foundddddddddddddddddddddddddddddddddddddddddd");
+        }
         //filmi favorilere ekle
         if(req.method === "POST"){
 
             // 1. kimlik sorgusu
             const { currentUser } = await serverAuth(req);
-            console.log("current found");
+            console.log("CURRENTUSER.NAME::::::::::::::::::::::::::",currentUser.name);
 
             if (!currentUser) {
                 return res.status(401).json({ error: "Unauthorized! serverAuth" });
             }
 
             // 2. filmi tespit
-            const { movieId } = req.body;
+            const { movieId } = req.body; //payload
+
             const existingMovie = await prismadb.movie.findUnique({
                 where: {
                     id: movieId,
                 }
             });
-            console.log("existingMovie bulundu favorite.ts");
 
             if(!existingMovie){
-                console.log("existing movie yok");
                 throw new Error("Invalid ID");
             }
 
@@ -58,6 +61,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
 
             // 1. kimlik sorgusu
             const { currentUser } = await serverAuth(req);
+            console.log(currentUser.name);
 
             // 2. filmi tespit
             const { movieId } = req.body;
@@ -67,10 +71,9 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                 }
             });
             if(!existingMovie){
-                throw new Error("Invalid ID");
+                throw new Error(`Movie with ID ${movieId} not found`);
             };
  
-
             // 3. db güncelleme
             const updatedFavoriteIds = without(currentUser.favoriteIds, movieId);
             const updatedUser = await prismadb.user.update({

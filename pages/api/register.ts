@@ -7,10 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).end();
     }    
     try{
-        console.log("register dayızzzz");
-        //request in body sini ayır
         const { email, name, password } = req.body;
-        
         
         //eğer önceden kaydolmuşsa aynı mail ile
         const existingUser = await prismadb.user.findUnique({
@@ -18,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 email,
             }
         });
+        
         if (existingUser){
             return res.status(422).json({ error: "Email taken"});
         }

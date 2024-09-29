@@ -5,10 +5,8 @@ import "./globals.css";
 import Billboard from '@/components/Billboard';
 import MovieList from '@/components/MovieList';
 import useMovieList from '@/hooks/useMovieList';
+import InfoModal from '@/components/InfoModal';
 
-//ERROR:email basıyor, name bassın.
-//ERROR: github giriş her zaman girmiyor, googe da öyle.
-//kayıt olmuş olan kulancı giremiyor
 
 import { NextPageContext } from 'next';
 import useFavorites from '@/hooks/useFavorites';
@@ -40,6 +38,7 @@ export default function Home() {
 
     return (
         <>
+        <InfoModal visible onClose={() => {}}/>
         <Navbar/>
         <Billboard/>
         <div className='pb-40'>

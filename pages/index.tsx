@@ -6,8 +6,7 @@ import Billboard from '@/components/Billboard';
 import MovieList from '@/components/MovieList';
 import useMovieList from '@/hooks/useMovieList';
 import InfoModal from '@/components/InfoModal';
-
-
+import useInfoModal from '@/hooks/useInfoModal';
 import { NextPageContext } from 'next';
 import useFavorites from '@/hooks/useFavorites';
 
@@ -36,9 +35,11 @@ export default function Home() {
 
     const { data: favorites = [] } = useFavorites();
 
+    const { isOpen, closeModal } = useInfoModal();
+
     return (
         <>
-        <InfoModal visible onClose={() => {}}/>
+        <InfoModal visible={isOpen} onClose={closeModal}/>
         <Navbar/>
         <Billboard/>
         <div className='pb-40'>

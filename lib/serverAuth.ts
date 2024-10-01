@@ -3,30 +3,27 @@ import { getSession } from "next-auth/react";
 
 import prismadb from '@/lib/prismadb';
 
-const serverAuth = async (req: NextApiRequest) => {
-    const session = await getSession({ req });
-    console.log("Session object:", session); // Log the session object
+// serverAuth, gelen bir istekte (Next.js API request) oturum bilgilerini doğrular 
+// ve kullanıcının veritabanındaki (Prisma ile) kaydını bulur.
 
-    //signed in or not
+const serverAuth = async (req: NextApiRequest) => {
+    const session = await getSession({ req }); //OTURUM
     if (!session?.user?.email){
         throw new Error("Session not found");
     }
 
+    // OTURUM VARSA prismadb üzerinden kullanıcının e-posta adresini kullanarak veritabanından ilgili kullanıcıyı bulur.
     const currentUser = await prismadb.user.findUnique({
         where: {
             email: session.user.email,
         }
     });
-
-    console.log(currentUser);
-    console.log(currentUser.data);
-    
-    //found user or not
     if(!currentUser){
         throw new Error("user not founddd! serverAuth");
     }
 
-    return { currentUser };
+    //OTURUM->USER & USER'I OBJE OLARAK DÖNDÜR.
+    return { currentUser }; //prismadb deki haliyle obje olarak döndür. id, name, email, hashedpasswd, ....
 }
 
 export default serverAuth;

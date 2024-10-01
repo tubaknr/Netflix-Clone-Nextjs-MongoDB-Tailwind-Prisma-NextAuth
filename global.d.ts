@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 
 declare global {
-    namespace gloablThis {
+    namespace globalThis {
         var prismadb: PrismaClient
     }   
 }

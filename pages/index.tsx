@@ -14,7 +14,6 @@ export async function getServerSideProps(context: NextPageContext){
     const session = await getSession(context);
 
     if (!session){ //hesaba girilmemişse
-        console.log("SESSION:",session);
         return{
             redirect: {
                 destination: '/auth', //hesaba girmeden siteye ulaşamaz 

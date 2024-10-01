@@ -12,17 +12,17 @@ import { getSession } from "next-auth/react";
 export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try{
         const session = await getSession({ req });
-        console.log("SESSIONNNNN object:", session); // Log the session object
+        // console.log("SESSIONNNNN object:", session); // Log the session object
         //signed in or not
         if (!session){
             throw new Error("Session not foundddddddddddddddddddddddddddddddddddddddddd");
         }
+//-----------------------------------------------------------------------------------------------------------POST---------------------------------------------------------
         //filmi favorilere ekle
         if(req.method === "POST"){
 
             // 1. kimlik sorgusu
             const { currentUser } = await serverAuth(req);
-            console.log("CURRENTUSER.NAME::::::::::::::::::::::::::",currentUser.name);
 
             if (!currentUser) {
                 return res.status(401).json({ error: "Unauthorized! serverAuth" });
@@ -36,7 +36,6 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     id: movieId,
                 }
             });
-
             if(!existingMovie){
                 throw new Error("Invalid ID");
             }
@@ -52,16 +51,14 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
                     }
                 }
             });
-            console.log("db güncellendi");
             return res.status(200).json(user);
 }
-
+//------------------------------------------------------------------------------------------DELETE----------------------------------------------------------
         //filmi favorilerden çıkar
         if(req.method === "DELETE"){
 
             // 1. kimlik sorgusu
             const { currentUser } = await serverAuth(req);
-            console.log(currentUser.name);
 
             // 2. filmi tespit
             const { movieId } = req.body;
@@ -91,6 +88,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
         //eğer psot yada delete req değilse
         return res.status(405).end(); 
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
     }catch(error){
         console.log(error);
         return res.status(500).json({ error: error.message || "Something went wrong" });

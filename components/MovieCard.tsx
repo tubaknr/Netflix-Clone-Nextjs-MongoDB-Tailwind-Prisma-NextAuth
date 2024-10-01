@@ -85,13 +85,8 @@ const MovieCard: React.FC<MovieCardProps> = ({data}) => {
                                  {data.genre}
                             </p>
                         </div>
-                     
-                     
-
-
 
                     </div>
-
 
             </div>
         </div>

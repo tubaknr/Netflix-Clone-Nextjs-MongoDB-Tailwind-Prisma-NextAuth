@@ -14,7 +14,6 @@ interface FavoriteButtonProps {
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
     const { mutate: mutateFavorites } = useFavorites();
     
-
     const { data: currentUser, mutate } = useCurrentUser();
 
     // useMemo = memoization. optimize performance. will be called again if the deps change.
@@ -38,41 +37,40 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
         }
 
         try{
+            let response;
+            console.log(movieId);
 
-        
-        let response;
-        console.log(movieId);
+            // if it is a fav, delete from favs list
+            if (isFavorite){
+                response = await axios.delete('/api/favorite', { data: { movieId } });
+                console.log(response.data);
+            }
 
-        // if it is a fav, delete from favs list
-        if (isFavorite){
-            response = await axios.delete('/api/favorite', { data: { movieId } });
-            console.log(response.data);
-        }
+            // FAV EKLE
+            else{
+                response = await axios.post('/api/favorite', { movieId }, { withCredentials: true});
+                console.log(response.data);
+            }
 
-        // FAV EKLE
-        else{
-            response = await axios.post('/api/favorite', { movieId }, { withCredentials: true});
-            console.log(response.data);
-        }
+            // new favs list; made of fav movie id s
+            const updatedFavorites = response?.data?.favoriteIds;
+                
+            // mutate: 'fcn to update the user's state after fav list modified'
+            // or cache with the new user data, including the updated list of favorite IDs
+            mutate({ //useCurrentUser'dan gelen mutate
+                ...currentUser, //object spread operator which creates a shallow copy of the currentUser object.
+                favoriteIds: updatedFavorites
+            });
 
-        // new favs list; made of fav movie id s
-        const updatedFavorites = response?.data?.favoriteIds;
+            // mutateFavorites: A function to update the favorites UI or re-fetch data.
+            mutateFavorites(); //useFavorites'den gelen mutate
             
-        // mutate: 'fcn to update the user's state after fav list modified'
-        // or cache with the new user data, including the updated list of favorite IDs
-        mutate({ //useCurrentUser'dan gelen mutate
-            ...currentUser, //object spread operator which creates a shallow copy of the currentUser object.
-            favoriteIds: updatedFavorites
-        });
-
-        // mutateFavorites: A function to update the favorites UI or re-fetch data.
-        mutateFavorites(); //useFavorites'den gelen mutate
-            
-    }catch(error){
-        console.error("Error toggling favorites, FavoriteButton.tsx ", error);
-    }
+        }catch(error){
+            console.error("Error toggling favorites, FavoriteButton.tsx ", error);
+        }
     }, [movieId, isFavorite, currentUser, mutate, mutateFavorites]);
 
+    
     const Icon = isFavorite ? AiOutlineCheck : AiOutlinePlus;
 
     return(

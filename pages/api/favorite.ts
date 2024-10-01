@@ -30,7 +30,6 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
 
             // 2. filmi tespit
             const { movieId } = req.body; //payload
-
             const existingMovie = await prismadb.movie.findUnique({
                 where: {
                     id: movieId,

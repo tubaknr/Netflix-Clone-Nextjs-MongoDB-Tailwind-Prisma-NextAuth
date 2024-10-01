@@ -11,10 +11,13 @@ interface InfoModalProps{
 };
 
 const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
-    const [isVisible, setIsVisible] = useState(!!visible);
+    const [isVisible, setIsVisible] = useState(!!visible); //visible ne gelirse gelsin, null, undef, non-zero, zero, ... ya true olsun ya false. undef falan gelmesin. ya visiible, ya invisible.
+    // If visible = "some string", isVisible will be true.
+    // If visible = null, isVisible will be false.
+    
     const { movieId } = useInfoModal();
 
-    const { data = {}} = useMovie(movieId);
+    const { data = {} } = useMovie(movieId);
     
     useEffect(() => {
         setIsVisible(!!visible);

@@ -19,16 +19,19 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
 
     const { data = {} } = useMovie(movieId);
     
+    
     useEffect(() => {
         setIsVisible(!!visible);
     }, [visible]);
 
+    
     const handleClose = useCallback(() => {
         setIsVisible(false);
         setTimeout(() => {
             onClose();
         }, 300);
     }, [onClose]);
+
 
     if (!visible){
         return null;

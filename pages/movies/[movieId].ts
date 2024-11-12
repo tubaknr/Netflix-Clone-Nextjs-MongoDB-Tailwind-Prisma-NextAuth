@@ -9,7 +9,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     try{
         await serverAuth(req);
         const { movieId } = req.query;
-
+        console.log("MOVIEIDDDDDDDDD PAGES/MOVIES/[MOVIEID].TS: ", movieId);
+        
         if(typeof movieId !== 'string'){
             throw new Error("Movie ID is not a string! Inalid ID!");
         }
@@ -22,6 +23,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                 id: movieId,
             }
         });
+        console.log("MOVIEEEEEE PAGES/MOVIES/[MOVIEID].TS: ", movie);
+
         if(!movie){
             throw new Error("There is no movie with this ID!!!");
         }

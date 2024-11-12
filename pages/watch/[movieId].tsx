@@ -6,9 +6,11 @@ import { AiOutlineArrowLeft } from 'react-icons/ai';
 const Watch = () => {
     const router = useRouter();
     const { movieId } = router.query;
+    // console.log("MOVIEIDDD WATCH/.TSX: ", movieId); //CORRECT
 
     const { data } = useMovie(movieId as string);
-    
+    console.log("DATAAAA WATCH/.TSX: ", data);
+
     return(
         <div className='h-screen w-screen bg-black'>
             <nav className='

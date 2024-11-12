@@ -1,25 +1,15 @@
-
 import React from "react";
 import { signOut } from "next-auth/react";
-<<<<<<< HEAD
-import useCurrentUser from '../hooks/useCurrentUser';
-=======
 import useCurrentUser from "@/hooks/useCurrentUser";
->>>>>>> refs/remotes/origin/main
 
 interface AccountMenuProps{
     visible?: boolean;
 }
 const AccountMenu: React.FC<AccountMenuProps> = ({ visible }) => {
-<<<<<<< HEAD
-    
+   
     const { data: user } = useCurrentUser();
     // console.log("USERRRRRRRRRRRRRRRRRR:", user);
 
-=======
-    const {data} = useCurrentUser();
-    
->>>>>>> refs/remotes/origin/main
     if (!visible){
         return null;
     }
@@ -31,11 +21,8 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ visible }) => {
                     <div className="px-3 group/item flex flex-row gap-3 items-center w-full">
                         <img className="w-8 rounded-md" src="/images/default_user.jpg" alt=""/>
                         <p className="text-white text-sm group-hover/item:underline">
-<<<<<<< HEAD
                         {user?.name}
-=======
-                        {data?.name}
->>>>>>> refs/remotes/origin/main
+
                         </p>
                     </div>
                     <hr className="bg-gray-600 border-0 h-px my-4"></hr>

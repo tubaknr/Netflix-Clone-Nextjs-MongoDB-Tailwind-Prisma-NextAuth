@@ -5,11 +5,8 @@ import "./globals.css";
 import Billboard from '@/components/Billboard';
 import MovieList from '@/components/MovieList';
 import useMovieList from '@/hooks/useMovieList';
-
-//ERROR:email basıyor, name bassın.
-//ERROR: github giriş her zaman girmiyor, googe da öyle.
-//kayıt olmuş olan kulancı giremiyor
-
+import InfoModal from '@/components/InfoModal';
+import useInfoModal from '@/hooks/useInfoModal';
 import { NextPageContext } from 'next';
 import useFavorites from '@/hooks/useFavorites';
 
@@ -17,7 +14,6 @@ export async function getServerSideProps(context: NextPageContext){
     const session = await getSession(context);
 
     if (!session){ //hesaba girilmemişse
-        console.log("SESSION:",session);
         return{
             redirect: {
                 destination: '/auth', //hesaba girmeden siteye ulaşamaz 
@@ -25,7 +21,6 @@ export async function getServerSideProps(context: NextPageContext){
             }
         }
     }
-
     return{
         props: {}
     }
@@ -38,8 +33,11 @@ export default function Home() {
 
     const { data: favorites = [] } = useFavorites();
 
+    const { isOpen, closeModal } = useInfoModal();
+
     return (
         <>
+        <InfoModal visible={isOpen} onClose={closeModal}/>
         <Navbar/>
         <Billboard/>
         <div className='pb-40'>

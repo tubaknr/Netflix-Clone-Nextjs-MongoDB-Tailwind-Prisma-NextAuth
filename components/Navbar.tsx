@@ -70,7 +70,6 @@ export default function Navbar() {
                     </div>    
                     <BsChevronDown className={`text-white transition ${showAccountMenu ? 'rotate-180' : 'rotate-0'}`}/>
                     <AccountMenu visible={showAccountMenu}/>
-
                 </div>
             </div>
         </div>

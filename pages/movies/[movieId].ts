@@ -6,18 +6,20 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     if(req.method !== "GET"){
         return res.status(405).end();
     }
-    try{
-        await serverAuth(req);
-        const { movieId } = req.query;
+    await serverAuth(req);
+    const { movieId } = req.query;
+    console.log("MOVIEIDDDDDDDDD PAGES/MOVIES/[MOVIEID].TS: ", movieId);
+    
+    if(typeof movieId !== 'string'){
         console.log("MOVIEIDDDDDDDDD PAGES/MOVIES/[MOVIEID].TS: ", movieId);
-        
-        if(typeof movieId !== 'string'){
-            throw new Error("Movie ID is not a string! Inalid ID!");
-        }
-        if(!movieId){
-            throw new Error("There is no movieID !");
-        }
-
+        throw new Error("Movie ID is not a string! Inalid ID!");
+    }
+    if(!movieId){
+        console.log("MOVIEIDDDDDDDDD PAGES/MOVIES/[MOVIEID].TS: ", movieId);
+        throw new Error("There is no movieID !");
+    }
+    
+    try{
         const movie = await prismadb.movie.findUnique({
             where: {
                 id: movieId,

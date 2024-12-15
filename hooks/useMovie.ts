@@ -3,13 +3,11 @@ import fetcher from "@/lib/fetcher";
 
 const useMovie = (id: string) => {
     // console.log("IDDD USEMOVIE.TSSSSSS: ",id); //CORRECT
-    const {data, error, isLoading} = useSWR(id ? "/api/movies/" + id : "", fetcher, {
+    const {data, error, isLoading} = useSWR(id ? `/api/movies/${id}` : "", fetcher);
 
-        revalidateIfStale: false,
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
-    });
-
+    console.log("USEMOVIE DATA: ", data);
+    console.log("ERROR USEMOVIE: ", error);
+    
     return{
         data,
         error,

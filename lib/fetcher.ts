@@ -1,8 +1,16 @@
 import axios from 'axios';
 
 //fetching data using Axios
-const fetcher = (url: string) => axios.get(url)
-                                      .then((res) => res.data);
+const fetcher = async (url: string) => {
+    const res = await axios.get(url);
+    console.log("RESSSSS:", res.data);
+    try{
+        return res.data;
+    }catch(error){
+        console.log("FETCHER ERROR: ", error);
+        throw error;
+    }
+}
 //a single parameter url of type string. This parameter is expected to be the URL from which you want to fetch data.
 
 //axios.get(url):

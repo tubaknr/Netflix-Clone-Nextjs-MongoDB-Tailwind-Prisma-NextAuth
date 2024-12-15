@@ -11,6 +11,12 @@ const Watch = () => {
     const { data } = useMovie(movieId as string);
     console.log("DATAAAA WATCH/.TSX: ", data);
 
+    if (!data){
+        return(
+            <div className='text-white p-10 text-center '>Loading...</div>
+        )
+    }
+
     return(
         <div className='h-screen w-screen bg-black'>
             <nav className='

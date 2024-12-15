@@ -1,3 +1,15 @@
+# Netflix Clone with Nextjs and React
+
+## Sceenshots of the project:
+![Screenshot from 2024-12-15 14-16-36](https://github.com/user-attachments/assets/bec2628c-85ff-488c-b21d-44d693edaaeb)
+![Screenshot from 2024-12-15 14-41-12](https://github.com/user-attachments/assets/bcea86b4-1106-4b2f-acbc-a86d6276f726)
+![Screenshot from 2024-12-15 14-17-57](https://github.com/user-attachments/assets/9b6f3237-e011-47c5-bd9a-83b91f6661e6)
+![Screenshot from 2024-12-15 14-18-26](https://github.com/user-attachments/assets/9e3c6bd5-5597-4f15-8628-5028894c1a60)
+
+## The video:
+https://github.com/user-attachments/assets/9a0ed918-b0f9-49bd-b216-55d9e99966be
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

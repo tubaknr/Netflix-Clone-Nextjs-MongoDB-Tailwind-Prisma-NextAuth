@@ -27,6 +27,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
     setIsVisible(false);
     setTimeout(() => {
       onClose();
+      console.log("InfoModal closed");
     }, 300);
   }, [onClose]);
 
